@@ -7,8 +7,12 @@ import org.springframework.data.domain.Pageable;
 
 public interface ExpenseService {
     Page<Expense> getAllExpense(Pageable page);
+
     Expense getExpenseById(Long id);
-    String deleteByExpenseId(Long id);
+
+    void deleteByExpenseId(Long id);
+
     Expense saveExpense(Expense expense);
+
     Expense updateExpense(Long id, Expense expense);
 }

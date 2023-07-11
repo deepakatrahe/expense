@@ -5,9 +5,13 @@ import com.deepak.expensetrackerv1.service.ExpenseService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.deepak.expensetrackerv1.utils.ValidationUtils.checkValidationError;
+
 
 @RestController
 public class ExpenseController {
@@ -18,9 +22,8 @@ public class ExpenseController {
         this.expenseService = expenseService;
     }
 
-
-    @GetMapping("/expense")
-    public List<Expense> getALlExpense(Pageable page) {
+    @GetMapping("/expenses")
+    public List<Expense> getAllExpenses(Pageable page) {
         return expenseService.getAllExpense(page).toList();
     }
 
@@ -29,21 +32,21 @@ public class ExpenseController {
         return expenseService.getExpenseById(id);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @DeleteMapping("/expenses")
-    public String deleteExpenseById(@RequestParam Long id) {
+    public void deleteExpenseById(@RequestParam Long id) {
         expenseService.deleteByExpenseId(id);
-        return "Expense deleted successfully";
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping("/expenses")
-    public Expense saveExpense(@Valid @RequestBody Expense expense) {
+    public Expense saveExpenseDetails(@Valid @RequestBody Expense expense, final BindingResult bindingResult) {
+        checkValidationError(bindingResult);
         return expenseService.saveExpense(expense);
     }
 
     @PutMapping("/expenses/{id}")
-    public Expense updateExpense(@PathVariable Long id, @RequestBody Expense expense) {
+    public Expense updateExpenseDetails(@RequestBody Expense expense, @PathVariable Long id) {
         return expenseService.updateExpense(id, expense);
     }
 }
