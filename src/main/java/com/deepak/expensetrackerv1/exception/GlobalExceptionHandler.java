@@ -17,17 +17,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorObject> handleGeneralException(Exception ex) {
-        ex.printStackTrace();
-        ErrorObject errorObject = new ErrorObject();
-        errorObject.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        errorObject.setMessage(ex.getMessage());
-        errorObject.setTimestamp(new Date());
-        return ResponseEntity.internalServerError().body(errorObject);
-    }
-
-
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorObject> handleExpenseNotFoundException(ResourceNotFoundException ex) {
         ErrorObject errorObject = new ErrorObject();
@@ -57,6 +46,25 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, headers, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ItemAlreadyExistsException.class)
+    public ResponseEntity<ErrorObject> handleItemAlreadyExistsException(ItemAlreadyExistsException ex) {
+        ex.printStackTrace();
+        ErrorObject errorObject = new ErrorObject();
+        errorObject.setStatusCode(HttpStatus.CONFLICT.value());
+        errorObject.setMessage(ex.getMessage());
+        errorObject.setTimestamp(new Date());
+        return new ResponseEntity<>(errorObject, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorObject> handleGeneralException(Exception ex) {
+        ex.printStackTrace();
+        ErrorObject errorObject = new ErrorObject();
+        errorObject.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorObject.setMessage(ex.getMessage());
+        errorObject.setTimestamp(new Date());
+        return ResponseEntity.internalServerError().body(errorObject);
+    }
 
 }
 

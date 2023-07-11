@@ -4,9 +4,10 @@ import com.deepak.expensetrackerv1.entities.User;
 import com.deepak.expensetrackerv1.entities.UserModel;
 import com.deepak.expensetrackerv1.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import static com.deepak.expensetrackerv1.utils.ValidationUtils.checkValidationError;
 
 @RestController
 public class UserController {
@@ -16,8 +17,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> saveUser(@RequestBody UserModel user) {
-        return new ResponseEntity<>(userService.createUser(user), org.springframework.http.HttpStatus.CREATED);
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> readUser(@PathVariable Long id) {
+        return new ResponseEntity<>(userService.readUser(id), org.springframework.http.HttpStatus.OK);
     }
 }

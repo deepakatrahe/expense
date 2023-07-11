@@ -5,5 +5,6 @@ import com.deepak.expensetrackerv1.entities.UserModel;
 
 public interface UserService {
 
-    User createUser(UserModel user);
+    UserModel createUser(UserModel user);
+    User readUser(Long id);
 }

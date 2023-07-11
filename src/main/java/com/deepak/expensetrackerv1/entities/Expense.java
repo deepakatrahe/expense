@@ -2,11 +2,11 @@ package com.deepak.expensetrackerv1.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -23,7 +23,7 @@ public class Expense {
     private Long id;
 
     @Column(name = "expense_name")
-    @NotNull("Expense name cannot be null")
+    @NotNull(message = "Expense name cannot be null")
     @Size(min = 3, max = 50, message = "Expense name must be between 3 to 50 characters")
     private String name;
 
@@ -31,7 +31,7 @@ public class Expense {
     private String description;
 
     @Column(name = "expense_amount")
-    @NotNull("Expense amount cannot be null")
+    @NotNull(message = "Expense amount cannot be null")
     private BigDecimal amount;
 
     @NotBlank(message = "Please enter a category")
